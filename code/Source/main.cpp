@@ -1,19 +1,22 @@
 // This is the main file.
 // It uses the other support files to actually
 // execute the chess game.
-#include "Chess.h"
-#include "GameProtocolDriver.h"
+#include <iostream>
 
-// Uncomment the line below to run unit tests
-// #define RUN_UNIT_TESTS
+using namespace std;
+
 
 
 int main( int argc, char ** argv )
 {
-  #ifdef RUN_UNIT_TESTS
-  ::testing::InitGoogleMock(&argc, argv);
-  RUN_ALL_TESTS ( ) ;
-  #endif /* RUN_UNIT_TESTS */
+  int myInt = 2;
+  int * myIntPtr = &myInt;
 
-  new Chess::GameProtocolDriver();
+  cout << "myInt: " << myInt << endl;
+  cout << "&myInt: " << &myInt << endl;
+
+  cout << "myIntPtr: " << myIntPtr << endl;
+  cout << "&myIntPtr: " << &myIntPtr << endl;
+  cout << "*myIntPtr: " << *myIntPtr << endl;
+  cout << "&(*myIntPtr): " << &(*myIntPtr) << endl;
 }
