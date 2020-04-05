@@ -6,9 +6,13 @@
 #define CHESS_INTERFACE_H_
 
 #include "Chess.h"
+
+#include <boost/asio.hpp>
+
 #include "Board.h"
 #include "BaseTurn.h"
 #include "Pieces/Pieces.h"
+#include "WebServer/WebServer.h"
 
 
 namespace Chess
@@ -61,6 +65,8 @@ namespace Chess
     string        userInput_;
     char          checkStatus_;
     BaseTurnPtr & currentTurn_;
+    WebServer::WebServer ws_;
+    boost::asio::io_service io_service_;
   };
 
 }

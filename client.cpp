@@ -1,40 +1,41 @@
-#include <stdio.h> 
-#include <sys/socket.h> 
-#include <arpa/inet.h> 
-#include <unistd.h> 
-#include <string.h> 
-#define PORT 2345 
-   
-int main(int argc, char const *argv[]) 
-{ 
-    int sock = 0, valread; 
-    struct sockaddr_in serv_addr; 
-    const char *hello = "A2,A4"; 
-    char buffer[1024] = {0}; 
-    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) 
-    { 
-        printf("\n Socket creation error \n"); 
-        return -1; 
-    } 
-   
-    serv_addr.sin_family = AF_INET; 
-    serv_addr.sin_port = htons(PORT); 
-       
-    // Convert IPv4 and IPv6 addresses from text to binary form 
-    if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0)  
-    { 
-        printf("\nInvalid address/ Address not supported \n"); 
-        return -1; 
-    } 
-   
-    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) 
-    { 
-        printf("\nConnection Failed \n"); 
-        return -1; 
-    } 
-    send(sock , hello , strlen(hello) , 0 ); 
-    printf("Hello message sent\n"); 
-    valread = read( sock , buffer, 1024); 
-    printf("%s\n",buffer ); 
-    return 0; 
-}
+#include <iostream>  
+#include <boost/asio.hpp>  
+  
+using namespace boost::asio;  
+using ip::tcp;  
+using std::string;  
+using std::cout;  
+using std::endl; 
+
+int main() {  
+     boost::asio::io_service io_service;  
+  
+//socket creation  
+     tcp::socket socket(io_service);  
+  
+//connection  
+     socket.connect( tcp::endpoint( boost::asio::ip::address::from_string("127.0.0.1"), 1234 ));  
+  
+// request/message from client  
+     const string msg = "Hello from Client!\n";  
+     boost::system::error_code error;  
+     boost::asio::write( socket, boost::asio::buffer(msg), error );  
+     if( !error ) {  
+          cout << "Client sent hello message!" << endl;  
+     }  
+     else {  
+          cout << "send failed: " << error.message() << endl;  
+     }  
+  
+// getting a response from the server  
+     boost::asio::streambuf receive_buffer;  
+     boost::asio::read(socket, receive_buffer, boost::asio::transfer_all(), error);  
+     if( error && error != boost::asio::error::eof ) {  
+          cout << "receive failed: " << error.message() << endl;  
+     }  
+     else {  
+          const char* data = boost::asio::buffer_cast<const char*>(receive_buffer.data());  
+          cout << data << endl;  
+     }  
+     return 0;  
+}  

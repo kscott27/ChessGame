@@ -33,7 +33,8 @@ ifeq ($(DEBUG_MODE),1)
 		-g \
 		-DDEBUG
 	# linker flags
-	LDLIBS := 
+	LDLIBS := \
+		-lboost_system
 else
 	# release flags
 	# C preprocessor flags
@@ -44,7 +45,8 @@ else
 		-std=c++11 \
 		-I ../code/Source
 	# linker flags
-	LDLIBS := 
+	LDLIBS := \
+		-lboost_system
 endif
 
 # build command for the target executable

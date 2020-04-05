@@ -14,7 +14,8 @@ namespace Chess
 
   Interface::Interface( BoardPtr board, BaseTurnPtr & currentTurn )
    : board_(board),
-     currentTurn_(currentTurn)
+     currentTurn_(currentTurn),
+     ws_(io_service_)
   {
   	// set initial check status so that neither team 
   	// is in check
@@ -218,9 +219,8 @@ namespace Chess
 
   	// getline(cin, userInput_);
 
-    WebServer::WebServer ws;
     char buffer[1024] = {0};
-    ws.getInput(buffer);
+    io_service_.run();
 
 
     printf("user input contents: %s\n",buffer );
