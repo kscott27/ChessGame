@@ -4,6 +4,10 @@
 // included Interface header file.
 #include "Interface.h"
 
+#include <stdio.h>
+
+#include "WebServer/WebServer.h"
+
 
 namespace Chess
 {
@@ -210,8 +214,22 @@ namespace Chess
   void Interface::getInput( )
   {
     cout << currentTurn_->getTurn() << "'s move: ";
-  	getline(cin, userInput_);
+
+
+  	// getline(cin, userInput_);
+
+    WebServer::WebServer ws;
+    char buffer[1024] = {0};
+    ws.getInput(buffer);
+
+
+    printf("user input contents: %s\n",buffer );
+    string temp(buffer);
+    userInput_ = temp;
+
     cout << userInput_ << endl;
+
+
     if(userInput_ == "")
       exit(0);
   }
