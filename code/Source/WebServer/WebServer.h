@@ -25,17 +25,19 @@ namespace Chess
     {
     public:  
       // constructor for accepting connection from client  
-      WebServer( boost::asio::io_service & io_service );
+      WebServer( boost::asio::io_service & io_service, bool & pendingUserInput, string & userInput );
       
       //-- public methods
       void handleAccept( ConnectionAgent::ConnectionAgentPtr connection, const boost::system::error_code& err );
 
     protected:  
       //-- protected methods
-      void startAccept( );
+      void startAccept( bool & pendingUserInput, string & userInput );
 
       //-- protected members
-      ip::tcp::acceptor acceptor_;  
+      ip::tcp::acceptor acceptor_;
+      bool & pendingUserInput_;
+      string & userInput_;
     };  
 
   }

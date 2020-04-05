@@ -12,11 +12,34 @@
 namespace Chess
 {
 
+  class ThreadObj
+  {
+  public:
+    ThreadObj( bool & pending, string & userInput )
+      : pending_(pending),
+        userInput_(userInput)
+    { }
+
+    void operator() ( int x )
+    {
+      boost::asio::io_service io_service;
+      Chess::WebServer::WebServer ws(io_service, pending_, userInput_);
+      cout << "running io service" << endl;
+      io_service.run();
+    }
+
+  protected:
+    bool &   pending_;
+    string & userInput_;
+  };
+
   Interface::Interface( BoardPtr board, BaseTurnPtr & currentTurn )
    : board_(board),
      currentTurn_(currentTurn),
-     io_service_(),
-     ws_(io_service_)
+     pendingUserInput(true),
+     webserviceThread_(ThreadObj(pendingUserInput, userInput_), 1)
+     // io_service_(),
+     // ws_(io_service_)
   {
   	// set initial check status so that neither team 
   	// is in check
@@ -217,22 +240,25 @@ namespace Chess
   {
     cout << currentTurn_->getTurn() << "'s move: ";
 
+    while(pendingUserInput) { }
 
+    pendingUserInput = true;
   	// getline(cin, userInput_);
 
-    char buffer[1024] = {0};
-    io_service_.run();
+    // char buffer[1024] = {0};
+    // io_service_.run();
 
 
-    printf("user input contents: %s\n",buffer );
-    string temp(buffer);
-    userInput_ = temp;
+    // printf("user input contents: %s\n",buffer );
+    // string temp(buffer);
+    // userInput_ = temp;
 
-    cout << userInput_ << endl;
+    cout << "User input: " << userInput_ << endl;
 
 
     if(userInput_ == "")
       exit(0);
+
   }
 
   // Takes user input from the standard input

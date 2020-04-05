@@ -27,14 +27,15 @@ ifeq ($(DEBUG_MODE),1)
 	# -I sets the default directory root for all #include paths
 	# -g enables debug symbols for use with gdb
 	# -D allows a macro to be defined (e.g. -DDEBUG defines the macro DEBUG, which enables the DEBUG_CONSOLE)
-	CXXFLAGS := \
-		-std=c++11 \
+	CXXFLAGS := 				\
+		-std=c++11 				\
 		-I ../code/Source \
-		-g \
+		-g 								\
 		-DDEBUG
 	# linker flags
-	LDLIBS := \
-		-lboost_system
+	LDLIBS := 			 \
+		-lboost_system \
+		-pthread
 else
 	# release flags
 	# C preprocessor flags
@@ -46,7 +47,8 @@ else
 		-I ../code/Source
 	# linker flags
 	LDLIBS := \
-		-lboost_system
+		-lboost_system \
+		-pthread
 endif
 
 # build command for the target executable

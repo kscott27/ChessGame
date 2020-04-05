@@ -8,6 +8,7 @@
 #include "Chess.h"
 
 #include <boost/asio.hpp>
+#include <thread>
 
 #include "Board.h"
 #include "BaseTurn.h"
@@ -52,6 +53,7 @@ namespace Chess
     int sourceRow;
     int destCol;
     int destRow;
+    bool pendingUserInput;
 
   protected:
     //-- protected types
@@ -65,8 +67,9 @@ namespace Chess
     string        userInput_;
     char          checkStatus_;
     BaseTurnPtr & currentTurn_;
-    boost::asio::io_service io_service_;
-    WebServer::WebServer ws_;
+    thread        webserviceThread_;
+    // boost::asio::io_service io_service_;
+    // WebServer::WebServer    ws_;
   };
 
 }

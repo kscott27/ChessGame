@@ -18,9 +18,9 @@ namespace Chess
   namespace WebServer
   {
 
-    ConnectionAgent::ConnectionAgentPtr ConnectionAgent::create( boost::asio::io_service & io_service )
+    ConnectionAgent::ConnectionAgentPtr ConnectionAgent::create( boost::asio::io_service & io_service, bool & pendingUserInput, string & userInput )
     {
-      return ConnectionAgentPtr( new ConnectionAgent(io_service) );
+      return ConnectionAgentPtr( new ConnectionAgent(io_service, pendingUserInput, userInput) );
     }
 
     tcp::socket & ConnectionAgent::socket()
@@ -45,11 +45,15 @@ namespace Chess
         boost::asio::placeholders::bytes_transferred) );  
     }
 
-    void ConnectionAgent::handleRead( const boost::system::error_code& err, size_t bytes_transferred )
+    void ConnectionAgent::handleRead( const boost::system::error_code & err, size_t bytes_transferred )
     {
       if(!err)
       {  
-        cout << data << endl;  
+        cout << endl << "ConnectionAgent::handleRead; bytes_transferred: " << bytes_transferred << endl;
+        string temp(data);
+        userInput_ = temp;
+        memset(data, 0, sizeof data);
+        pendingUserInput_ = false;
       }   
       else
       {  
@@ -58,7 +62,7 @@ namespace Chess
       }  
     }
 
-    void ConnectionAgent::handleWrite( const boost::system::error_code& err, size_t bytes_transferred )
+    void ConnectionAgent::handleWrite( const boost::system::error_code & err, size_t bytes_transferred )
     {
       if(!err) 
       {  

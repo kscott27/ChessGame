@@ -26,12 +26,14 @@ namespace Chess
       //-- types
       typedef boost::shared_ptr<ConnectionAgent> ConnectionAgentPtr;
 
-      ConnectionAgent(boost::asio::io_service& io_service)
-        : socket_(io_service)
+      ConnectionAgent( boost::asio::io_service& io_service, bool & pendingUserInput, string & userInput )
+        : socket_(io_service),
+          pendingUserInput_(pendingUserInput),
+          userInput_(userInput)
       { }  
       
       // creating the pointer  
-      static ConnectionAgentPtr create( boost::asio::io_service & io_service );
+      static ConnectionAgentPtr create( boost::asio::io_service & io_service, bool & pendingUserInput, string & userInput );
       
       //socket creation  
       ip::tcp::socket & socket( );
@@ -45,6 +47,8 @@ namespace Chess
       std::string message="Hello From Server!";  
       enum {length = 1024};  
       char data[length];  
+      bool & pendingUserInput_;
+      string & userInput_;
     };
 
   }
