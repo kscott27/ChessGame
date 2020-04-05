@@ -15,6 +15,7 @@ namespace Chess
   Interface::Interface( BoardPtr board, BaseTurnPtr & currentTurn )
    : board_(board),
      currentTurn_(currentTurn),
+     io_service_(),
      ws_(io_service_)
   {
   	// set initial check status so that neither team 

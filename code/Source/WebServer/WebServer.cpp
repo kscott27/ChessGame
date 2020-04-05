@@ -19,7 +19,7 @@ namespace Chess
   {
 
     WebServer::WebServer( boost::asio::io_service & io_service )
-      : acceptor_(io_service, ip::tcp::endpoint(ip::tcp::v4(), 1234))
+      : acceptor_(io_service, ip::tcp::endpoint(ip::tcp::v4(), 2345))
     {  
       startAccept();  
     }

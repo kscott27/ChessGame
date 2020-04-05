@@ -65,8 +65,8 @@ namespace Chess
     string        userInput_;
     char          checkStatus_;
     BaseTurnPtr & currentTurn_;
-    WebServer::WebServer ws_;
     boost::asio::io_service io_service_;
+    WebServer::WebServer ws_;
   };
 
 }
