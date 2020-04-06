@@ -90,7 +90,7 @@ if [ $RUN_BUILD == true ]; then
     # synchronizes build output for parallel builds, and colorizes the output with ccze (if installed)
     time make \
     --output-sync=target \
-    -j $BUILD_JOBS \
+    -j1  \
     $TRACE_FLAG \
     DEBUG_MODE=$DEBUG_BUILD |&
     if [ $ENABLE_COLOR == true ]; then ccze -A; else cat; fi;
